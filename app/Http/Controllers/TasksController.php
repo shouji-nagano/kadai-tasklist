@@ -38,12 +38,21 @@ class TasksController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $requestq
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        
+         // バリデーション
+        $request->validate([
+            'status' => 'required|max:10',
+            'content' => 'required|max:255',
+        ]);
+
+            
         $task = new Task;
+        $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
         return redirect('/');
@@ -86,8 +95,16 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+         // バリデーション
+        $request->validate([
+            'status' => 'required|max:10',
+            'content' => 'required|max:255',
+        ]);
+
+            
         $task = Task::findOrFail($id);
         // メッセージを更新
+        $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
         
